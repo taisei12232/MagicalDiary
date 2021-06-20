@@ -53,5 +53,13 @@ def ranking():
     print(' --- query_items 3 --- ')
     print()
     top = []
-    for i in jsonify(list(items)):
-        top.append({i['name'],i['id']})
+    for i in list(items):
+        top.append([i['name'],i['id']])
+    return jsonify(top)
+@app.route("/mypage/<user_id>")
+def yourPage(user_id):
+    item = container.read_item(user_id,user_id)
+    print(' --- read_item --- ')
+    print(item['name'])
+    print()
+    return [item['name'],item['start'],item['count'],item['monster']]
