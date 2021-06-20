@@ -60,6 +60,15 @@ def ranking():
 def yourPage(user_id):
     item = container.read_item(user_id,user_id)
     print(' --- read_item --- ')
-    print(item['name'])
+    print(item)
     print()
-    return [item['name'],item['start'],item['count'],item['monster']]
+    pages = [item['name'],item['start'],item['count'],item['monster']]
+    print(pages)
+    return jsonify(pages)
+@app.route("/imagepost/<user_id>/<string:agent>")
+def result(user_id,agent):
+    read_item = container.read_item(user_id,user_id)
+    read_item['count'] = read_item['count'] + 1
+    read_item['monster'] = read_item['monster'] + [agent]
+    response = container.replace_item(item=read_item, body=read_item)
+    return response
