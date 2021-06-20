@@ -1,6 +1,7 @@
 from azure.cosmos import exceptions, CosmosClient, PartitionKey
 from flask import Flask, jsonify, request
-api = Flask(__name__)
+from . import app
+
 
 # Initialize the Cosmos client
 endpoint = "https://agentserver.documents.azure.com:443/"
@@ -23,13 +24,13 @@ container = database.get_container_client(container_name)
 print(container)
 
 # </create_container_if_not_exists>
-@api.route('/')
+@app.route('/')
 def all():
     items = container.read_all_items(max_item_count=5)
     print(' --- read_all_items --- ')
     print()
     return jsonify(list(items))
-@api.route('/read/<user_id>', methods=['GET'])
+@app.route('/read/<user_id>', methods=['GET'])
 def read_user(user_id):
     item = container.read_item(user_id,user_id)
     print(' --- read_item --- ')
@@ -37,10 +38,20 @@ def read_user(user_id):
     print()
     return item
 
-@api.route('/search/<user_id>', methods=['GET'])
+@app.route('/search/<user_id>', methods=['GET'])
 def seach_user(user_id):
-    query = "SELECT * FROM items i WHERE i.id = user_id"
+    query = f"SELECT * FROM items i WHERE i.id = '{user_id}'"
     items = container.query_items(query, enable_cross_partition_query=True)
     print(' --- query_items 3 --- ')
     print()
-    return jsonify(list(items))
+    return jsonify(list(items)[0]['name'])
+
+@app.route('/rank')
+def ranking():
+    query = "SELECT * FROM items i ORDER BY i.count"
+    items = container.query_items(query, enable_cross_partition_query=True)
+    print(' --- query_items 3 --- ')
+    print()
+    top = []
+    for i in jsonify(list(items)):
+        top.append({i['name'],i['id']})
