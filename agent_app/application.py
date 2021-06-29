@@ -57,7 +57,7 @@ def result(user_id,agent):
     read_item['count'] = read_item['count'] + 1
     read_item['monster'] = read_item['monster'] + [agent]
     response = container.replace_item(item=read_item, body=read_item)
-    return response
+    return '', 204
 @app.route("/login/<user_id>/<user_name>")
 def logIn(user_id,user_name):
     try:
@@ -71,4 +71,4 @@ def logIn(user_id,user_name):
             'monster':[]
         }
         container.create_item(body=user)
-    return user_name
+    return '', 204
