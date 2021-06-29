@@ -1,9 +1,10 @@
 from azure.cosmos import exceptions, CosmosClient, PartitionKey
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from datetime import date
 from . import app
 
-
+CORS(app)
 # Initialize the Cosmos client
 endpoint = "https://agentserver.documents.azure.com:443/"
 key = 'xRyACyJ8SEBhfGm7ZdcPThYvpkyPFcMmD8o8iKTDhI8HJUKfByFr0hvoactFQF7bb0Nq1TF12dzxqfWmCjeDBA=='
@@ -36,18 +37,15 @@ def read_user(user_id):
 
 @app.route('/search/<user_id>', methods=['GET'])
 def seach_user(user_id):
-    query = f"SELECT * FROM items i WHERE i.id = '{user_id}'"
+    query = f"SELECT i.id,i.name,i.start,i.count,i.monster FROM items i WHERE i.id = '{user_id}'"
     items = container.query_items(query, enable_cross_partition_query=True)
-    return jsonify(list(items)[0]['name'])
+    return jsonify(list(items))
 
 @app.route('/rank')
 def ranking():
-    query = "SELECT * FROM items i ORDER BY i.count"
+    query = "SELECT i.id,i.name,i.count FROM items i ORDER BY i.count DESC"
     items = container.query_items(query, enable_cross_partition_query=True)
-    top = []
-    for i in list(items):
-        top.append([i['name'],i['id']])
-    return jsonify(top)
+    return jsonify(list(items))
 @app.route("/mypage/<user_id>")
 def yourPage(user_id):
     item = container.read_item(user_id,user_id)
