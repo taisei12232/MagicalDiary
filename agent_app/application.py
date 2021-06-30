@@ -34,13 +34,6 @@ def all():
 def read_user(user_id):
     item = container.read_item(user_id,user_id)
     return item
-
-@app.route('/search/<user_id>', methods=['GET'])
-def seach_user(user_id):
-    query = f"SELECT i.id,i.name,i.start,i.count,i.monster FROM items i WHERE i.id = '{user_id}'"
-    items = container.query_items(query, enable_cross_partition_query=True)
-    return jsonify(list(items))
-
 @app.route('/rank')
 def ranking():
     query = "SELECT i.id,i.name,i.count FROM items i ORDER BY i.count DESC"
