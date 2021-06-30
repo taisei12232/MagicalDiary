@@ -32,7 +32,10 @@ def all():
     return jsonify(list(items))
 @app.route('/read/<user_id>', methods=['GET'])
 def read_user(user_id):
-    item = container.read_item(user_id,user_id)
+    try:
+        item = container.read_item(user_id,user_id)
+    except:
+        return 'てやんでい！そんなユーザーは存在しねぇぜ！一昨日きやがれ！',404
     return item
 @app.route('/rank')
 def ranking():
@@ -44,12 +47,15 @@ def yourPage(user_id):
     try:
         item = container.read_item(user_id,user_id)
     except:
-        return 'NotFound', 404
+        return '', 404
     pages = [item['name'],item['start'],item['count'],item['monster']]
     return jsonify(pages)
 @app.route("/imagepost/<user_id>/<string:agent>")
 def result(user_id,agent):
-    read_item = container.read_item(user_id,user_id)
+    try:
+        read_item = container.read_item(user_id,user_id)
+    except:
+        return '', 404
     read_item['count'] = read_item['count'] + 1
     read_item['monster'] = read_item['monster'] + [agent]
     response = container.replace_item(item=read_item, body=read_item)
