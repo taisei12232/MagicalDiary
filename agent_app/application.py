@@ -41,7 +41,10 @@ def ranking():
     return jsonify(list(items))
 @app.route("/mypage/<user_id>")
 def yourPage(user_id):
-    item = container.read_item(user_id,user_id)
+    try:
+        item = container.read_item(user_id,user_id)
+    except:
+        return 'NotFound', 404
     pages = [item['name'],item['start'],item['count'],item['monster']]
     return jsonify(pages)
 @app.route("/imagepost/<user_id>/<string:agent>")
