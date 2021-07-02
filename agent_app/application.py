@@ -5,16 +5,27 @@ from datetime import date
 from . import app
 
 CORS(app)
+# Initialize the Cosmos client
 endpoint = "https://agentserver.documents.azure.com:443/"
 key = 'xRyACyJ8SEBhfGm7ZdcPThYvpkyPFcMmD8o8iKTDhI8HJUKfByFr0hvoactFQF7bb0Nq1TF12dzxqfWmCjeDBA=='
 
+# <create_cosmos_client>
 client = CosmosClient(endpoint, key)
+# </create_cosmos_client>
+
+# Create a database
+# <create_database_if_not_exists>
 database = client.get_database_client('MagicalDiary')
+# </create_database_if_not_exists>
 database
+# Create a container
+# Using a good partition key improves the performance of database operations.
+# <create_container_if_not_exists>
 container_name = 'User'
 container = database.get_container_client(container_name)
 container
 
+# </create_container_if_not_exists>
 @app.route('/')
 def all():
     items = container.read_all_items(max_item_count=5)
