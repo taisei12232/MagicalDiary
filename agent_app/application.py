@@ -27,9 +27,8 @@ container
 
 # </create_container_if_not_exists>
 @app.route('/')
-def all():
-    items = container.read_all_items(max_item_count=5)
-    return jsonify(list(items))
+def home():
+    return 'welcome!',200
 @app.route('/read/<user_id>', methods=['GET'])
 def read_user(user_id):
     try:
@@ -48,16 +47,18 @@ def yourPage(user_id):
         item = container.read_item(user_id,user_id)
     except:
         return '', 404
-    pages = [item['name'],item['start'],item['count'],item['monster']]
+    pages = {"name":item['name'],"start":item['start'],"count":item['count'],"monster":item['monster']}
     return jsonify(pages)
-@app.route("/imagepost/<user_id>/<string:agent>")
-def result(user_id,agent):
+@app.route("/imagepost", methods=["POST"])
+def result():
+    user_id = request.form["user_id"]
+    agent = request.form["agent"]
     try:
         read_item = container.read_item(user_id,user_id)
     except:
         return '', 404
-    read_item['count'] = read_item['count'] + 1
-    read_item['monster'] = read_item['monster'] + [agent]
+    read_item['count'] += 1
+    read_item['monster'] += [agent]
     response = container.replace_item(item=read_item, body=read_item)
     return '', 204
 @app.route("/login/<user_id>/<user_name>")
