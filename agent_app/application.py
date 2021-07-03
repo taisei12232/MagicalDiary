@@ -1,7 +1,7 @@
 from azure.cosmos import exceptions, CosmosClient, PartitionKey
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from datetime import date
+import datetime
 from . import app
 
 CORS(app)
@@ -61,15 +61,19 @@ def result():
     read_item['monster'] += [agent]
     response = container.replace_item(item=read_item, body=read_item)
     return '', 204
-@app.route("/login/<user_id>/<user_name>")
-def logIn(user_id,user_name):
+@app.route("/login",methods=["POST"])
+def logIn():
+    user_id = request.form["user_id"]
+    user_name = request.form["user_name"]
+    today =  datetime.date.today()
+    today = today.strftime('%Y/%m/%d')
     try:
         container.read_item(user_id,user_id)
     except:
         user = {
             'id':user_id,
             'name':user_name,
-            'start':'',
+            'start':today,
             'count':0,
             'monster':[]
         }
