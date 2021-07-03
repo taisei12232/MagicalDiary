@@ -7,7 +7,7 @@ from . import app
 CORS(app)
 # Initialize the Cosmos client
 endpoint = "https://agentserver.documents.azure.com:443/"
-key = 'xRyACyJ8SEBhfGm7ZdcPThYvpkyPFcMmD8o8iKTDhI8HJUKfByFr0hvoactFQF7bb0Nq1TF12dzxqfWmCjeDBA=='
+key = 'afnT6O0fIZj4pLQaXHjgQVZZ9WmJclER9fCE0JLgX7Nuj3mkhI2MQKlMV4IIDQJg9K7I0AZJNz2jDlHv6pGnqg=='
 
 # <create_cosmos_client>
 client = CosmosClient(endpoint, key)
