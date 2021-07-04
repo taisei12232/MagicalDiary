@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/126f0baf-d22f-4b20-b753-c1735af77980/resourceGroups/rg-tashiro-mutsuki-2/providers/Microsoft.Web/sites/app-magicaldiary-python-test",
+    "appService.deploySubpath": "."
+}
