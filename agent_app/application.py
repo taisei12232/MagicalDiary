@@ -17,12 +17,13 @@ client = CosmosClient(endpoint, key)
 # <create_database_if_not_exists>
 database = client.get_database_client('MagicalDiary')
 # </create_database_if_not_exists>
+
 # Create a container
 # Using a good partition key improves the performance of database operations.
 # <create_container_if_not_exists>
 container = database.get_container_client('User')
-
 # </create_container_if_not_exists>
+
 @app.route('/')
 def home():
     return 'welcome!',200
@@ -46,7 +47,7 @@ def userPage(user_id):
     try:
         item = container.read_item(user_id,user_id)
     except:
-        return '',404
+        return 'NotFound',404
     pages = {
         "name":item['name'],
         "begin":item['begin'],
