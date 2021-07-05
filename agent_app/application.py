@@ -52,7 +52,7 @@ def userPage(user_id):
         return '',404
     pages = {
         "name":item['name'],
-        "start":item['start'],
+        "begin":item['begin'],
         "count":item['count'],
         "energyDrinks":item['energyDrinks']
         }
