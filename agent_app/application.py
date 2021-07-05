@@ -17,13 +17,10 @@ client = CosmosClient(endpoint, key)
 # <create_database_if_not_exists>
 database = client.get_database_client('MagicalDiary')
 # </create_database_if_not_exists>
-database
 # Create a container
 # Using a good partition key improves the performance of database operations.
 # <create_container_if_not_exists>
-container_name = 'User'
-container = database.get_container_client(container_name)
-container
+container = database.get_container_client('User')
 
 # </create_container_if_not_exists>
 @app.route('/')
