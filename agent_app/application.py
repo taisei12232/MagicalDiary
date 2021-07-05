@@ -38,13 +38,13 @@ def read_user(user_id):
         return '',404
     return item
 
-@app.route('/rank')
+@app.route('/rank', methods=['GET'])
 def ranking():
     query = "SELECT i.id,i.name,i.count FROM items i ORDER BY i.count DESC"
     items = container.query_items(query, enable_cross_partition_query=True)
     return jsonify(list(items)),200
 
-@app.route("/mypage/<user_id>")
+@app.route("/mypage/<user_id>", methods=['GET'])
 def userPage(user_id):
     try:
         item = container.read_item(user_id,user_id)
