@@ -32,7 +32,7 @@ def home():
 def read_user(user_id):
     try:
         item = container.read_item(user_id,user_id)
-    except:
+    except Exception:
         return '',404
     return item
 
@@ -46,7 +46,7 @@ def ranking():
 def userPage(user_id):
     try:
         item = container.read_item(user_id,user_id)
-    except:
+    except Exception:
         return 'NotFound',404
     pages = {
         "name":item['name'],
@@ -62,7 +62,7 @@ def result():
     energyDrink = request.form["energyDrink"]
     try:
         read_item = container.read_item(user_id,user_id)
-    except:
+    except Exception:
         return '',404
     read_item['count'] += 1
     read_item['energyDrinks'] += [energyDrink]
@@ -77,7 +77,7 @@ def logIn():
     formatedToday = today.strftime('%Y/%m/%d')
     try:
         container.read_item(user_id,user_id)
-    except:
+    except Exception:
         user = {
             'id':user_id,
             'name':user_name,
