@@ -33,7 +33,7 @@ def read_user(user_id):
     try:
         item = container.read_item(user_id,user_id)
     except Exception:
-        return '',404
+        return 'エラーデス！',404
     return item
 
 @app.route('/rank', methods=['GET'])
