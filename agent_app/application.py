@@ -2,12 +2,14 @@ from azure.cosmos import exceptions, CosmosClient, PartitionKey
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import datetime
+import json
 from . import app
 
 CORS(app)
 # Initialize the Cosmos client
-endpoint = "https://agentserver.documents.azure.com:443/"
-key = 'afnT6O0fIZj4pLQaXHjgQVZZ9WmJclER9fCE0JLgX7Nuj3mkhI2MQKlMV4IIDQJg9K7I0AZJNz2jDlHv6pGnqg=='
+json_key = open('key.json', 'r')
+endpoint = json.load(json_key)['endpoint']
+key = json.load(json_key)['key']
 
 # <create_cosmos_client>
 client = CosmosClient(endpoint, key)
